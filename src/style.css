@@ -13,5 +13,12 @@ body {
 }
 
 #d3 {
-  background-color: lightsteelblue;
+}
+
+.yesDoping {
+  fill: orangered;
+}
+
+.noDoping {
+  fill: yellowgreen;
 }
