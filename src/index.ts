@@ -16,7 +16,7 @@ function makeAScatterplotGraph(data): void {
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   const y = d3.scaleLinear().range([height, 0]);
-  y.domain([d3.max(data, d => d.Place), d3.min(data, d => d.Place)]);
+    y.domain([d3.max(data, d => d.Place) + 2, d3.min(data, d => d.Place)]);
 
   // Add the Y Axis
   const yAxis = d3.axisLeft().scale(y);
@@ -46,7 +46,7 @@ function makeAScatterplotGraph(data): void {
 
   const x = d3.scaleLinear().range([0, width]);
   x.domain([
-    d3.max(data, secondsBehindFastest),
+    d3.max(data, secondsBehindFastest) + 10,
     d3.min(data, secondsBehindFastest)
   ]);
 
