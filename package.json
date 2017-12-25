@@ -18,5 +18,8 @@
     "build": "webpack",
     "start": "webpack-dev-server --open",
     "deploy": "npm run build && gh-pages -d dist"
+  },
+  "dependencies": {
+    "d3": "^4.12.0"
   }
 }

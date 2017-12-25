@@ -1,2 +1,17 @@
 body {
 }
+
+.centered {
+  height: 90vh;
+  display: flex;
+  justify-content: center; /* center horizontally */
+  align-items: center; /* center vertically */
+}
+
+.content {
+  width: 800px;
+}
+
+#d3 {
+  background-color: lightsteelblue;
+}

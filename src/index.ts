@@ -1,26 +1,69 @@
 import "./style.css";
+import * as d3 from "d3";
 
-// function fetchAndExecutewithJson(
-//     url: string,
-//     jsonConsumer: (json: object) => void
-// ) {
-//     fetch(url).then(response => {
-//         response.json().then(jsonConsumer);
-//     });
-// }
+function makeAScatterplotGraph(data): void {
+    const margin = { top: 20, right: 20, bottom: 20, left: 20 },
+        width = 800 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
 
-function appendJsonPre(json: object): void {
-    const pre = document.createElement("pre");
-    pre.innerHTML = JSON.stringify(json, null, 2);
-    document.getElementById("d3").appendChild(pre);
+    // Draw base SVG
+    const svg = d3
+        .select("div#d3")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    const y = d3.scaleLinear().range([height, 0]);
+    y.domain([d3.max(data, d => d.Place), d3.min(data, d => d.Place)]);
+
+    // Add the Y Axis
+    const yAxis = d3.axisLeft().scale(y);
+    svg
+        .append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text("Gross Domestic Product, USA");
+
+    function secondsBehindFastest(d) {
+        return d.Seconds - data[0].Seconds;
+    }
+
+    function formatSeconds(seconds: number) {
+        const min = Math.floor(seconds / 60);
+        const sec = seconds % 60;
+        function padLeft(num) {
+            return ("00" + num.toString()).slice(-2);
+        }
+        return `${padLeft(min)}:${padLeft(sec)}`;
+    }
+
+    const x = d3.scaleLinear().range([0, width]);
+    x.domain([
+        d3.max(data, secondsBehindFastest),
+        d3.min(data, secondsBehindFastest)
+    ]);
+
+    // Add the X Axis
+    const xAxis = d3
+        .axisBottom()
+        .scale(x)
+        .tickFormat(formatSeconds);
+    svg
+        .append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
 }
 
 document.addEventListener("DOMContentLoaded", event => {
-    // const url =
-    //     "https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/cyclist-data.json";
-    // fetchAndExecutewithJson(url, appendJsonPre);
-
-    appendJsonPre(data);
+    makeAScatterplotGraph(data);
 });
 
 const data = [
