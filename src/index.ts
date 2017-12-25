@@ -4,7 +4,7 @@ import * as d3 from "d3";
 function makeAScatterplotGraph(data): void {
   const margin = { top: 20, right: 20, bottom: 20, left: 20 },
     width = 800 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    height = 600 - margin.top - margin.bottom;
 
   // Draw base SVG
   const svg = d3
