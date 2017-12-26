@@ -22,3 +22,15 @@ body {
 .noDoping {
   fill: yellowgreen;
 }
+
+text {
+  font-family: sans-serif;
+}
+
+.markerText {
+  font-size: 12px;
+}
+
+.legend text {
+  font-size: 14px;
+}

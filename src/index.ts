@@ -4,7 +4,7 @@ import * as d3 from "d3";
 function makeAScatterplotGraph(data): void {
   const margin = { top: 20, right: 20, bottom: 20, left: 20 },
     width = 800 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
+    height = 700 - margin.top - margin.bottom;
 
   // Draw base SVG
   const svg = d3
@@ -16,7 +16,7 @@ function makeAScatterplotGraph(data): void {
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   const y = d3.scaleLinear().range([height, 0]);
-    y.domain([d3.max(data, d => d.Place) + 2, d3.min(data, d => d.Place)]);
+  y.domain([d3.max(data, d => d.Place) + 2, d3.min(data, d => d.Place)]);
 
   // Add the Y Axis
   const yAxis = d3.axisLeft().scale(y);
@@ -44,7 +44,7 @@ function makeAScatterplotGraph(data): void {
     return `${padLeft(min)}:${padLeft(sec)}`;
   }
 
-  const x = d3.scaleLinear().range([0, width]);
+  const x = d3.scaleLinear().range([0, width - 70]);
   x.domain([
     d3.max(data, secondsBehindFastest) + 10,
     d3.min(data, secondsBehindFastest)
@@ -62,15 +62,25 @@ function makeAScatterplotGraph(data): void {
     .call(xAxis);
 
   // Add the markers
-  svg
+  const marker = svg
     .selectAll(".marker")
     .data(data)
     .enter()
+    .append("g");
+
+  marker
     .append("circle")
     .attr("class", d => "marker " + (d.Doping ? "yesDoping" : "noDoping"))
     .attr("cx", d => x(secondsBehindFastest(d)))
     .attr("cy", d => y(d.Place))
     .attr("r", "5px");
+
+  marker
+    .append("text")
+    .text(d => d.Name)
+    .attr("class", "markerText")
+    .attr("x", d => x(secondsBehindFastest(d)) + 5 + 5)
+    .attr("y", d => y(d.Place) + 5);
 
   // Add marker legends
   const legend = svg.append("g").attr("class", "legend");
@@ -99,7 +109,6 @@ function makeAScatterplotGraph(data): void {
     .attr("x", 0.8 * width + 5 + 5)
     .attr("y", 0.8 * height - 40 + 5)
     .text("No doping allegation");
-
 }
 
 document.addEventListener("DOMContentLoaded", event => {
