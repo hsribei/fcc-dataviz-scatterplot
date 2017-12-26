@@ -2,7 +2,7 @@ import "./style.css";
 import * as d3 from "d3";
 
 function makeAScatterplotGraph(data): void {
-  const margin = { top: 20, right: 20, bottom: 20, left: 20 },
+  const margin = { top: 20, right: 20, bottom: 50, left: 50 },
     width = 800 - margin.left - margin.right,
     height = 700 - margin.top - margin.bottom;
 
@@ -23,13 +23,15 @@ function makeAScatterplotGraph(data): void {
   svg
     .append("g")
     .attr("class", "y axis")
-    .call(yAxis)
+    .call(yAxis);
+
+  svg
     .append("text")
+    .attr("class", "yAxisLabel")
     .attr("transform", "rotate(-90)")
-    .attr("y", 6)
-    .attr("dy", ".71em")
-    .style("text-anchor", "end")
-    .text("Gross Domestic Product, USA");
+    .attr("y", "-2em")
+    .attr("x", "-3.6em")
+    .text("Ranking");
 
   function secondsBehindFastest(d) {
     return d.Seconds - data[0].Seconds;
@@ -55,11 +57,18 @@ function makeAScatterplotGraph(data): void {
     .axisBottom()
     .scale(x)
     .tickFormat(formatSeconds);
+
   svg
     .append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + height + ")")
     .call(xAxis);
+
+  svg
+    .append("text")
+    .attr("x", width / 3)
+    .attr("y", height + 50)
+    .text("Minutes Behind Fastest Time");
 
   // Define the div for the tooltip
   var div = d3

@@ -49,3 +49,12 @@ div.tooltip {
   border-radius: 8px;
   pointer-events: none;
 }
+
+.axis text {
+  font-size: 14px;
+}
+
+.yAxisLabel {
+  fill: black;
+  font-size: 18px;
+}
