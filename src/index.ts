@@ -61,12 +61,42 @@ function makeAScatterplotGraph(data): void {
     .attr("transform", "translate(0," + height + ")")
     .call(xAxis);
 
+  // Define the div for the tooltip
+  var div = d3
+    .select("body")
+    .append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
   // Add the markers
   const marker = svg
     .selectAll(".marker")
     .data(data)
     .enter()
-    .append("g");
+    .append("g")
+    .on("mouseover", d => {
+      div
+        .transition()
+        .duration(200)
+        .style("opacity", 0.95);
+      div
+        .html(
+          `
+              ${d.Name}: ${d.Nationality}<br/>
+              Year: ${d.Year}, Time: ${d.Time}<br/>
+              <br/>
+              ${d.Doping || "No doping allegation"}
+          `
+        )
+        .style("left", d3.event.pageX + "px")
+        .style("top", d3.event.pageY + "px");
+    })
+    .on("mouseout", d => {
+      div
+        .transition()
+        .duration(200)
+        .style("opacity", 0);
+    });
 
   marker
     .append("circle")
